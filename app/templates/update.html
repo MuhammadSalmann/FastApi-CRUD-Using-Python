@@ -1,0 +1,53 @@
+<!-- app/templates/update.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Item</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Update Item</h1>
+        <form id="update-form" action="/items/{{ item['_id'] }}">
+            <div class="form-group">
+                <label for="_id">ID</label>
+                <input type="text" class="form-control" id="_id" name="_id" value="{{ item['_id'] }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ item['name'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description" value="{{ item['description'] }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Item</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('update-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const formDataJson = Object.fromEntries(formData.entries()); // Convert FormData to JSON
+        console.log(formDataJson);
+        fetch(this.action, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formDataJson)
+        }).then(function (response) {
+            if (response.ok) {
+                window.location.href = '/';
+            }
+        });
+    });
+    </script>
+    
+</body>
+
+</html>
